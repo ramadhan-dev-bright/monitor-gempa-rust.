@@ -1,0 +1,21 @@
+name: Monitor Gempa
+on:
+  workflow_dispatch: # Tombol manual
+  schedule:
+    - cron: '*/30 * * * *' # Jalan otomatis tiap 30 menit
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run Bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: cargo run --release
